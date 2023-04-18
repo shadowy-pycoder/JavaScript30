@@ -1,27 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Scoped CSS Variables and JS</title>
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
+
 <body>
   <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
 
   <div class="controls">
     <label for="spacing">Spacing:</label>
-    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+    <input class="spacing" id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
 
     <label for="blur">Blur:</label>
-    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+    <input class="blur" id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
 
     <label for="base">Base Color</label>
-    <input id="base" type="color" name="base" value="#ffc600">
+    <input class="base" id="base" type="color" name="base" value="#ffc600">
   </div>
 
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+    :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
+
+    img {
+      background-color: var(--base);
+      padding: var(--spacing);
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base);
+    }
 
     /*
       misc styles, nothing to do with CSS variables
@@ -46,7 +63,29 @@
   </style>
 
   <script>
+    const rootElement = document.documentElement;
+    const spacingInput = document.querySelector('.spacing')
+    const blurInput = document.querySelector('.blur')
+    const baseInput = document.querySelector('.base')
+    spacingInput.addEventListener('change', (e) => {
+      spacingInput.style.setProperty(`--${e.target.name}`, e.target.value + 'px');
+    });
+    spacingInput.addEventListener('mousemove', (e) => {
+      rootElement.style.setProperty(`--${e.target.name}`, e.target.value + 'px');
+    });
+    blurInput.addEventListener('change', (e) => {
+      rootElement.style.setProperty(`--${e.target.name}`, e.target.value + 'px');
+    });
+    blurInput.addEventListener('mousemove', (e) => {
+      rootElement.style.setProperty(`--${e.target.name}`, e.target.value + 'px');
+    });
+    baseInput.addEventListener('change', (e) => {
+      rootElement.style.setProperty(`--${e.target.name}`, e.target.value);
+    });
+
+
   </script>
 
 </body>
+
 </html>
